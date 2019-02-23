@@ -1,8 +1,11 @@
 import 'package:http/http.dart' as http ;
 import 'R_connection.dart';
 import 'dart:convert';
-import 'dart:io';
 
+/***
+ * The class responsible for making calls to the API
+ * TODO move build teams method into own class 
+ */
 class API_communicator {
 
   ///Returns Json of a competition from API as String, dynamic map
@@ -32,13 +35,10 @@ class API_communicator {
     teams.forEach((team) => print("NAME - " + team["name"] /*+ " CREEST - " + team["crestUrl"] */ ));
     ///Make team objects and create them here make a factory for them?
 
-//    resp.forEach((key, value) {
-//      print("DEBUG KEY" + key);
-//      print(value);
-
-//      print(teams);
-//    }
-//    );
   }
+
+  ///TODO need list of all competitions too, perhaps return top level and build out objects ar start up? or just display for each screen so can refresh just whats needed for this
+  ///So could have a method for populating each screen
+  ///EG - Matches for favourite teams
 }
 
