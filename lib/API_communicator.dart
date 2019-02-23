@@ -4,9 +4,10 @@ import 'dart:convert';
 import 'dart:io';
 
 class API_communicator {
-  ///Returns Json from API as String, dynamic map
-  Future<Map <String, dynamic>> fetch_response() async {
-    final response =  await http.get(R_connection.BASE + "competitions/BL1/teams", headers: {
+
+  ///Returns Json of a competition from API as String, dynamic map
+  Future<Map <String, dynamic>> fetch_competition_teams(String competitionCode) async {
+    final response =  await http.get(R_connection.BASE + "competitions/$competitionCode/teams", headers: {
       "X-Auth-Token": R_connection.APIKEY
     });
 
@@ -17,15 +18,18 @@ class API_communicator {
     } else {
       throw Exception('Failed to load post');
     }
-
   }
 
+
+
+  //return array of team objects
   Future<void> build_teams() async {
-    var resp = await fetch_response();
+    var resp = await fetch_competition_teams(R_connection.COMP_CODE_EUROPEAN_CHAMPIONSHIP);
 
     List teams = resp["teams"];
 
-    teams.forEach((team) => print(team["name"]));
+    //Has problems priniting if crest is null
+    teams.forEach((team) => print("NAME - " + team["name"] /*+ " CREEST - " + team["crestUrl"] */ ));
     ///Make team objects and create them here make a factory for them?
 
 //    resp.forEach((key, value) {
