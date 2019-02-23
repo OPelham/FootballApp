@@ -6,9 +6,8 @@ import 'dart:io';
 class API_communicator {
   ///Returns Json from API as String, dynamic map
   Future<Map <String, dynamic>> fetch_response() async {
-    print("DEBUG making API_communicator");
-    final response =  await http.get(R_connection.BASE + "competitions/BL1/matches", headers: {
-      "X-Auth-Token": "b6206f49f10942df9e7ec04470cfb1ef"
+    final response =  await http.get(R_connection.BASE + "competitions/BL1/teams", headers: {
+      "X-Auth-Token": R_connection.APIKEY
     });
 
     ///if connected return the json decoded into map
@@ -19,7 +18,23 @@ class API_communicator {
       throw Exception('Failed to load post');
     }
 
+  }
 
+  Future<void> build_teams() async {
+    var resp = await fetch_response();
+
+    List teams = resp["teams"];
+
+    teams.forEach((team) => print(team["name"]));
+    ///Make team objects and create them here make a factory for them?
+
+//    resp.forEach((key, value) {
+//      print("DEBUG KEY" + key);
+//      print(value);
+
+//      print(teams);
+//    }
+//    );
   }
 }
 

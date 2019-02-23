@@ -5,6 +5,8 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -53,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     ///testing API connection
     API_communicator connection = new API_communicator();
-    var conMap = connection.fetch_response();
+    connection.build_teams();
 
     setState(() {
       // This call to setState tells the Flutter framework that something has
