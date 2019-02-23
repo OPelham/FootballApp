@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'API_communicator.dart';
+import 'R_connection.dart';
 
 void main() => runApp(MyApp());
 
@@ -55,7 +56,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     ///testing API connection
     API_communicator connection = new API_communicator();
-    connection.build_teams();
+//    connection.build_competition_teams(R_connection.COMP_CODE_EUROPEAN_CHAMPIONSHIP);
+    connection.build_competition_standings(R_connection.COMP_CODE_GERMANY_BUNDESLIGA);
+
+
 
     setState(() {
       // This call to setState tells the Flutter framework that something has
