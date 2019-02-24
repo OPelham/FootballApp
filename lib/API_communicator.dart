@@ -63,8 +63,9 @@ class API_communicator {
     table.forEach((position) => print(position["points"] ));
 
 
-
   }
+
+  ///Need method to return
   
 
   ///TODO need list of all competitions too, perhaps return top level and build out objects ar start up? or just display for each screen so can refresh just whats needed for this
