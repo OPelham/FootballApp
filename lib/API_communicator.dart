@@ -1,18 +1,19 @@
-import 'package:http/http.dart' as http ;
+import 'package:http/http.dart' as http;
 import 'R_connection.dart';
 import 'dart:convert';
+import 'StandingsInfo.dart';
 
 /***
  * The class responsible for making calls to the API
- * TODO move build teams method into own class 
+ * TODO move build teams method into own class
  */
 class API_communicator {
-
   ///Returns Json of a competition from API as String, dynamic map
-  Future<Map <String, dynamic>> fetch_competition_teams(String competitionCode) async {
-    final response =  await http.get(R_connection.BASE + "competitions/$competitionCode/teams", headers: {
-      "X-Auth-Token": R_connection.APIKEY
-    });
+  Future<Map<String, dynamic>> fetch_competition_teams(
+      String competitionCode) async {
+    final response = await http.get(
+        R_connection.BASE + "competitions/$competitionCode/teams",
+        headers: {"X-Auth-Token": R_connection.APIKEY});
 
     ///if connected return the json decoded into map
     if (response.statusCode == 200) {
@@ -22,10 +23,11 @@ class API_communicator {
     }
   }
 
-  Future<Map<String, dynamic>> fetch_competition_standings(String competitionCode) async {
-    final response = await http.get(R_connection.BASE + "competitions/$competitionCode/standings", headers: {
-      "X-Auth-Token": R_connection.APIKEY
-    });
+  Future<Map<String, dynamic>> fetch_competition_standings(
+      String competitionCode) async {
+    final response = await http.get(
+        R_connection.BASE + "competitions/$competitionCode/standings",
+        headers: {"X-Auth-Token": R_connection.APIKEY});
 
     if (response.statusCode == 200) {
       print("DEBUG JSON to print" + response.body);
@@ -35,41 +37,48 @@ class API_communicator {
     }
   }
 
-
-
   //return array of team objects
   Future<void> build_competition_teams(String competitionCode) async {
     var resp = await fetch_competition_teams(competitionCode);
     List teams = resp["teams"];
     //Has problems priniting if crest is null
-    teams.forEach((team) => print("NAME - " + team["name"] /*+ " CREEST - " + team["crestUrl"] */ ));
+    teams.forEach((team) =>
+        print("NAME - " + team["name"] /*+ " CREEST - " + team["crestUrl"] */));
+
     ///Make team objects and create them here make a factory for them?
   }
-  
-  Future<void> build_competition_standings(String competitionCode) async {
+
+  /***
+   * Returns list of StandingsInfo objects each representing one team on table
+   */
+  Future<List<StandingsInfo>> build_competition_standings(String competitionCode) async {
     //list to return list of maps
-    List<Map<String,String>> standingsList;
+    List<StandingsInfo> standingsList = [];
 
     var resp = await fetch_competition_standings(competitionCode);
     print(resp);
     //get value for key standings, first element in array is all games, get arrayvalue from key table, each element is a position, useful keys - position, team - has map with name and crestUrl, points,
     List standings = resp["standings"];
-    print(standings);
+//    print(standings);
     Map<String, dynamic> totalSeason = standings[0];
-    print("TOTAL SEASON - $totalSeason");
+//    print("TOTAL SEASON - $totalSeason");
 
     List<dynamic> table = totalSeason["table"];
-    print("TABLE - $table");
-    table.forEach((position) => print(position["points"] ));
+//    print("TABLE - $table");
+    table.forEach((position) => standingsList.add(new StandingsInfo(
+        position["position"],
+        position["team"]["name"],
+        position["points"],
+        position["goalDifference"])));
 
+    return standingsList;
 
+//    print(standingsList.length);
   }
 
-  ///Need method to return
-  
+
 
   ///TODO need list of all competitions too, perhaps return top level and build out objects ar start up? or just display for each screen so can refresh just whats needed for this
   ///So could have a method for populating each screen
   ///EG - Matches for favourite teams
 }
-

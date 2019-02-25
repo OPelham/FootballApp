@@ -8,4 +8,9 @@ class StandingsInfo {
   int pointsDiff;
 
   StandingsInfo(this.position, this.name, this.points, this.pointsDiff);
+
+  @override
+  String toString(){
+    return "Position: $position, Name: $name, Points: $points, PointsDiff: $pointsDiff";
+  }
 }
